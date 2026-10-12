@@ -33,12 +33,14 @@ public final class MainActivity extends Activity {
     private static final String HOME = "https://" + HOST + "/assets/index.html";
     private static final int PICK_FILE = 40, SAVE_FILE = 41;
     private WebView web;
+    private String themeMode="system";
     private FrameLayout root;
     private ValueCallback<Uri[]> fileCallback;
     private byte[] pendingExport;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        themeMode=getPreferences(MODE_PRIVATE).getString("theme","system");
         boolean night = isNightMode();
         root = new FrameLayout(this);
         root.setBackgroundColor(night ? Color.rgb(23, 28, 24) : Color.rgb(246, 243, 236));
@@ -57,6 +59,8 @@ public final class MainActivity extends Activity {
         }
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
+        if(Build.VERSION.SDK_INT>=33)settings.setAlgorithmicDarkeningAllowed(false);
+        else if(Build.VERSION.SDK_INT>=29)settings.setForceDark(WebSettings.FORCE_DARK_OFF);
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(true);
@@ -91,10 +95,10 @@ public final class MainActivity extends Activity {
         });
         web.setWebChromeClient(new WebChromeClient() {
             @Override public boolean onJsAlert(WebView view,String url,String message,JsResult result) {
-                new AlertDialog.Builder(MainActivity.this).setTitle("DailyBalance").setMessage(message).setPositiveButton("知道了",(d,w)->result.confirm()).setOnCancelListener(d->result.cancel()).show();return true;
+                alertBuilder().setTitle("DailyBalance").setMessage(message).setPositiveButton("知道了",(d,w)->result.confirm()).setOnCancelListener(d->result.cancel()).show();return true;
             }
             @Override public boolean onJsConfirm(WebView view,String url,String message,JsResult result) {
-                new AlertDialog.Builder(MainActivity.this).setTitle("DailyBalance").setMessage(message).setPositiveButton("确定",(d,w)->result.confirm()).setNegativeButton("取消",(d,w)->result.cancel()).setOnCancelListener(d->result.cancel()).show();return true;
+                alertBuilder().setTitle("DailyBalance").setMessage(message).setPositiveButton("确定",(d,w)->result.confirm()).setNegativeButton("取消",(d,w)->result.cancel()).setOnCancelListener(d->result.cancel()).show();return true;
             }
             @Override public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
                 if(fileCallback!=null)fileCallback.onReceiveValue(null);
@@ -113,10 +117,13 @@ public final class MainActivity extends Activity {
         web.loadUrl(HOME);
     }
     private static WebResourceResponse blocked(){return new WebResourceResponse("text/plain","UTF-8",404,"Not found",new HashMap<>(),new ByteArrayInputStream(new byte[0]));}
-    private boolean isNightMode(){return false;}
+    private AlertDialog.Builder alertBuilder(){return new AlertDialog.Builder(this,isNightMode()?android.R.style.Theme_Material_Dialog_Alert:android.R.style.Theme_Material_Light_Dialog_Alert);}
+    private boolean isNightMode(){return "dark".equals(themeMode)||(!"light".equals(themeMode)&&(getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)==Configuration.UI_MODE_NIGHT_YES);}
     private void applySystemTheme(){
         boolean night=isNightMode();
         int bg=night?Color.rgb(23,28,24):Color.rgb(246,243,236);
+        if(root!=null)root.setBackgroundColor(bg);
+        if(web!=null)web.setBackgroundColor(bg);
         getWindow().setStatusBarColor(bg);
         getWindow().setNavigationBarColor(bg);
         int flags=getWindow().getDecorView().getSystemUiVisibility();
@@ -133,6 +140,7 @@ public final class MainActivity extends Activity {
     private void message(String text){runOnUiThread(()->Toast.makeText(this,text,Toast.LENGTH_LONG).show());}
     private void openExternal(Uri uri){if(!"https".equals(uri.getScheme()))return;try{startActivity(new Intent(Intent.ACTION_VIEW,uri));}catch(Exception e){message("未找到浏览器，请联网后打开来源链接");}}
     public final class FileBridge {
+        @JavascriptInterface public void setTheme(String mode){if(!"light".equals(mode)&&!"dark".equals(mode)&&!"system".equals(mode))return;runOnUiThread(()->{themeMode=mode;getPreferences(MODE_PRIVATE).edit().putString("theme",mode).apply();applySystemTheme();});}
         @JavascriptInterface public void exportFile(String name,String data,String mime){
             if(data==null||data.length()>12_000_000){message("备份文件过大，无法导出");return;}
             final byte[] bytes=data.getBytes(StandardCharsets.UTF_8);
@@ -164,7 +172,7 @@ public final class MainActivity extends Activity {
         }
     }
     @Override public void onBackPressed(){
-        web.evaluateJavascript("(function(){if(typeof page==='undefined')return false;var m=document.querySelector('dialog[open]');if(m&&m.open){m.close();return true;}if(document.querySelector('#foodEditorForm')){render();return true;}if(page!=='today'){go('today');return true;}return false;})()",value->{if("true".equals(value))return;if(web.canGoBack())web.goBack();else new AlertDialog.Builder(this).setMessage("退出DailyBalance？记录已保存在本机。").setPositiveButton("退出",(d,w)->finish()).setNegativeButton("取消",null).show();});
+        web.evaluateJavascript("(function(){if(typeof page==='undefined')return false;var m=document.querySelector('dialog[open]');if(m&&m.open){m.close();return true;}if(document.querySelector('#foodEditorForm')){render();return true;}if(page!=='today'){go('today');return true;}return false;})()",value->{if("true".equals(value))return;if(web.canGoBack())web.goBack();else alertBuilder().setMessage("退出DailyBalance？记录已保存在本机。").setPositiveButton("退出",(d,w)->finish()).setNegativeButton("取消",null).show();});
     }
     @Override protected void onDestroy(){if(fileCallback!=null)fileCallback.onReceiveValue(null);if(web!=null){web.removeJavascriptInterface("MealBalanceAndroid");web.destroy();}super.onDestroy();}
 }

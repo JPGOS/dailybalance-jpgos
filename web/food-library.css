@@ -116,3 +116,8 @@ input[type=file]::file-selector-button:active{transform:scale(.96)}
   .nutrition-card{font-size:10px}
   .nutrition-entry{max-width:170px}
 }
+
+html[data-theme="dark"] .photo-label,html[data-theme="dark"] .photo-credit{background:rgba(20,28,23,.8);color:#dfe7df}html[data-theme="dark"] .photo-fav{background:rgba(20,28,23,.85)}
+@media  (prefers-color-scheme:dark){html[data-theme="system"] .photo-label,html[data-theme="system"] .photo-credit{background:rgba(20,28,23,.8);color:#dfe7df}html[data-theme="system"] .photo-fav{background:rgba(20,28,23,.85)}}
+html[data-theme="dark"] .nutrition-totals>div{background:var(--surface-2)}
+@media  (prefers-color-scheme:dark){html[data-theme="system"] .nutrition-totals>div{background:var(--surface-2)}}
