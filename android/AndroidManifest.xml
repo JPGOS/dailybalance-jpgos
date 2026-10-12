@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="app.mealbalance.family" android:versionCode="17" android:versionName="1.5.5">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="app.mealbalance.family" android:versionCode="18" android:versionName="1.5.6">
   <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="35" />
   <application android:label="DailyBalance" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:theme="@style/AppTheme" android:allowBackup="false" android:usesCleartextTraffic="false" android:supportsRtl="true" android:debuggable="false">
     <activity android:name=".MainActivity" android:exported="true" android:configChanges="orientation|screenSize|keyboardHidden|uiMode" android:windowSoftInputMode="adjustResize">

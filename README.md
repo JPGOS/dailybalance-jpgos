@@ -1,6 +1,6 @@
 # dailybalance-jpgos
 
-饮食、运动与每日能量平衡记录工具。当前在线版与安卓版本为 **1.5.5**。
+饮食、运动与每日能量平衡记录工具。当前在线版与安卓版本为 **1.5.6**。
 
 [在线使用](https://meal-balance-jpgos.jpgosyoung.chatgpt.site/) · [安装与使用说明](docs/INSTALL_AND_USAGE.md)
 
