@@ -33,14 +33,14 @@ public final class MainActivity extends Activity {
     private static final String HOME = "https://" + HOST + "/assets/index.html";
     private static final int PICK_FILE = 40, SAVE_FILE = 41;
     private WebView web;
-    private String themeMode="system";
+    private String themeMode="light";
     private FrameLayout root;
     private ValueCallback<Uri[]> fileCallback;
     private byte[] pendingExport;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        themeMode=getPreferences(MODE_PRIVATE).getString("theme","system");
+        themeMode=getPreferences(MODE_PRIVATE).getString("theme","light");
         boolean night = isNightMode();
         root = new FrameLayout(this);
         root.setBackgroundColor(night ? Color.rgb(23, 28, 24) : Color.rgb(246, 243, 236));
@@ -118,7 +118,7 @@ public final class MainActivity extends Activity {
     }
     private static WebResourceResponse blocked(){return new WebResourceResponse("text/plain","UTF-8",404,"Not found",new HashMap<>(),new ByteArrayInputStream(new byte[0]));}
     private AlertDialog.Builder alertBuilder(){return new AlertDialog.Builder(this,isNightMode()?android.R.style.Theme_Material_Dialog_Alert:android.R.style.Theme_Material_Light_Dialog_Alert);}
-    private boolean isNightMode(){return "dark".equals(themeMode)||(!"light".equals(themeMode)&&(getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)==Configuration.UI_MODE_NIGHT_YES);}
+    private boolean isNightMode(){return "dark".equals(themeMode);}
     private void applySystemTheme(){
         boolean night=isNightMode();
         int bg=night?Color.rgb(23,28,24):Color.rgb(246,243,236);
@@ -140,7 +140,7 @@ public final class MainActivity extends Activity {
     private void message(String text){runOnUiThread(()->Toast.makeText(this,text,Toast.LENGTH_LONG).show());}
     private void openExternal(Uri uri){if(!"https".equals(uri.getScheme()))return;try{startActivity(new Intent(Intent.ACTION_VIEW,uri));}catch(Exception e){message("未找到浏览器，请联网后打开来源链接");}}
     public final class FileBridge {
-        @JavascriptInterface public void setTheme(String mode){if(!"light".equals(mode)&&!"dark".equals(mode)&&!"system".equals(mode))return;runOnUiThread(()->{themeMode=mode;getPreferences(MODE_PRIVATE).edit().putString("theme",mode).apply();applySystemTheme();});}
+        @JavascriptInterface public void setTheme(String mode){if(!"light".equals(mode)&&!"dark".equals(mode))return;runOnUiThread(()->{themeMode=mode;getPreferences(MODE_PRIVATE).edit().putString("theme",mode).apply();applySystemTheme();});}
         @JavascriptInterface public void exportFile(String name,String data,String mime){
             if(data==null||data.length()>12_000_000){message("备份文件过大，无法导出");return;}
             final byte[] bytes=data.getBytes(StandardCharsets.UTF_8);
