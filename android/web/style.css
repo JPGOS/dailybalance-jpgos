@@ -25,23 +25,7 @@
   --r-card:18px; --r-control:12px;
   color-scheme:light dark;
 }
-@media (prefers-color-scheme:dark){
-  :root{
-    --green:#63a382; --green-deep:#7fb394; --green-soft:#1d2c24;
-    --ink:#e4eae2; --ink-strong:#f2f5f0;
-    --muted:#93a097; --faint:#77847b;
-    --bg:#0f1412; --surface:#161d19; --surface-2:#1a231e;
-    --line:rgba(233,244,235,.10); --line-strong:rgba(233,244,235,.20);
-    --gold:#c9a674; --gold-soft:#d5b689;
-    --warm:#d69362;
-    --danger:#d0806c;
-    --toast-bg:#eef3ee; --toast-fg:#1a241e;
-    --shadow-xs:0 1px 2px rgba(0,0,0,.35);
-    --shadow-sm:0 1px 2px rgba(0,0,0,.30),0 8px 20px -8px rgba(0,0,0,.45);
-    --shadow-md:0 2px 4px rgba(0,0,0,.30),0 16px 36px -12px rgba(0,0,0,.55);
-    --shadow-green:0 10px 26px -10px rgba(99,163,130,.35);
-  }
-}
+
 *{box-sizing:border-box}
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;overscroll-behavior:none}
 ::selection{background:rgba(44,107,79,.18)}
@@ -121,7 +105,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .stat.accent{background:linear-gradient(150deg,var(--green),var(--green-deep));color:#fff;border-color:transparent;box-shadow:var(--shadow-green)}
 .stat.accent .num{color:#fff}
 .stat.accent .label,.stat.accent small{color:rgba(255,255,255,.78)}
-@media (prefers-color-scheme:dark){.stat.accent{background:linear-gradient(150deg,#3f7d5e,#2c5c46)}}
+
 
 /* ---------- 布局与面板 ---------- */
 .columns{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:22px;align-items:start}
@@ -138,12 +122,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .meal:nth-child(3) .icon{background:#edf1f7}
 .meal:nth-child(4) .icon{background:#f4ecf3}
 .meal:nth-child(5) .icon{background:#f6f1e4}
-@media (prefers-color-scheme:dark){
-  .meal:nth-child(2) .icon{background:#3a2f1f}
-  .meal:nth-child(3) .icon{background:#242c38}
-  .meal:nth-child(4) .icon{background:#35293a}
-  .meal:nth-child(5) .icon{background:#38311f}
-}
+
 .meal-heading>div{display:flex;align-items:center}
 .meal-heading small{color:var(--faint);font-size:11px;font-variant-numeric:tabular-nums}
 .empty{padding:22px 0 10px;color:var(--faint);font-size:12.5px}
@@ -156,7 +135,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);b
 .mini[data-delete]{color:var(--danger)}
 @media (hover:hover) and (pointer:fine){.mini:hover{background:var(--surface)}.mini[data-delete]:hover{background:rgba(164,81,63,.10)}}
 .summary{font-size:13px;line-height:2;background:var(--green-soft);padding:18px 20px;border-radius:14px;color:var(--ink)}
-@media (prefers-color-scheme:dark){.summary{background:var(--surface-2)}}
+
 .check{display:flex;gap:9px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:18px;padding:10px 12px;border-radius:10px;background:var(--surface-2);cursor:pointer}
 .check input{accent-color:var(--green);width:17px;height:17px}
 
@@ -220,11 +199,11 @@ dialog{border:0;border-radius:20px;padding:30px;width:460px;max-width:calc(100vw
 dialog[open]{opacity:1;transform:none}
 @starting-style{dialog[open]{opacity:0;transform:translateY(14px) scale(.98)}}
 dialog::backdrop{background:rgba(16,28,22,.42);backdrop-filter:blur(4px);transition:overlay .22s allow-discrete,display .22s allow-discrete}
-@media (prefers-color-scheme:dark){dialog::backdrop{background:rgba(0,0,0,.6)}}
+
 dialog .section-head{margin-bottom:10px}
 .estimate{background:var(--green-soft);text-align:center;padding:22px;border-radius:14px;margin:20px 0}
 .estimate strong{font-size:34px;letter-spacing:-.02em;color:var(--green);font-variant-numeric:tabular-nums}
-@media (prefers-color-scheme:dark){.estimate{background:var(--surface-2)}}
+
 dialog .actions>*{flex:1}
 .close{font-size:22px;color:var(--muted);width:36px;height:36px;border-radius:10px;transition:background-color .15s var(--ease-out),transform .12s var(--ease-out)}
 .close:active{transform:scale(.92)}
@@ -279,7 +258,7 @@ a{color:var(--green)}
   .row{gap:10px}
   #toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
 }
-@media(max-width:650px) and (prefers-color-scheme:dark){aside{background:rgba(20,27,23,.82)}}
+
 
 /* ---------- 减弱动态 ---------- */
 @media (prefers-reduced-motion:reduce){

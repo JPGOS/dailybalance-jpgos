@@ -113,7 +113,7 @@ public final class MainActivity extends Activity {
         web.loadUrl(HOME);
     }
     private static WebResourceResponse blocked(){return new WebResourceResponse("text/plain","UTF-8",404,"Not found",new HashMap<>(),new ByteArrayInputStream(new byte[0]));}
-    private boolean isNightMode(){return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;}
+    private boolean isNightMode(){return false;}
     private void applySystemTheme(){
         boolean night=isNightMode();
         int bg=night?Color.rgb(23,28,24):Color.rgb(246,243,236);

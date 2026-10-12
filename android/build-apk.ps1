@@ -40,11 +40,11 @@ if (!(Test-Path -LiteralPath $keyFile)) {
 }
 try {
   $env:MEAL_BALANCE_SIGNING_PASSWORD=[System.IO.File]::ReadAllText($secretFile).Trim()
-  Run-Checked "$javaBin/java.exe" @('-jar',"$buildTools/lib/apksigner.jar",'sign','--ks',$keyFile,'--ks-type','PKCS12','--ks-key-alias','meal-balance','--ks-pass','env:MEAL_BALANCE_SIGNING_PASSWORD','--key-pass','env:MEAL_BALANCE_SIGNING_PASSWORD','--out','release/DailyBalance-1.5.2.apk','build/aligned.apk')
+  Run-Checked "$javaBin/java.exe" @('-jar',"$buildTools/lib/apksigner.jar",'sign','--ks',$keyFile,'--ks-type','PKCS12','--ks-key-alias','meal-balance','--ks-pass','env:MEAL_BALANCE_SIGNING_PASSWORD','--key-pass','env:MEAL_BALANCE_SIGNING_PASSWORD','--out','release/DailyBalance-1.5.3.apk','build/aligned.apk')
 } finally { Remove-Item Env:MEAL_BALANCE_SIGNING_PASSWORD -ErrorAction SilentlyContinue }
-Run-Checked "$javaBin/java.exe" @('-jar',"$buildTools/lib/apksigner.jar",'verify','--verbose','--print-certs','release/DailyBalance-1.5.2.apk')
-Run-Checked "$buildTools/zipalign.exe" @('-c','-P','16','4','release/DailyBalance-1.5.2.apk')
-Run-Checked "$buildTools/aapt.exe" @('dump','badging','release/DailyBalance-1.5.2.apk')
-$hash=(Get-FileHash -LiteralPath 'release/DailyBalance-1.5.2.apk' -Algorithm SHA256).Hash.ToLower()
-[System.IO.File]::WriteAllText((Join-Path $root 'release/DailyBalance-1.5.2-SHA256.txt'),"$hash  DailyBalance-1.5.2.apk`n")
-Get-Item -LiteralPath 'release/DailyBalance-1.5.2.apk' | Select-Object Name,Length
+Run-Checked "$javaBin/java.exe" @('-jar',"$buildTools/lib/apksigner.jar",'verify','--verbose','--print-certs','release/DailyBalance-1.5.3.apk')
+Run-Checked "$buildTools/zipalign.exe" @('-c','-P','16','4','release/DailyBalance-1.5.3.apk')
+Run-Checked "$buildTools/aapt.exe" @('dump','badging','release/DailyBalance-1.5.3.apk')
+$hash=(Get-FileHash -LiteralPath 'release/DailyBalance-1.5.3.apk' -Algorithm SHA256).Hash.ToLower()
+[System.IO.File]::WriteAllText((Join-Path $root 'release/DailyBalance-1.5.3-SHA256.txt'),"$hash  DailyBalance-1.5.3.apk`n")
+Get-Item -LiteralPath 'release/DailyBalance-1.5.3.apk' | Select-Object Name,Length
